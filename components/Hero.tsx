@@ -904,7 +904,11 @@ function HeroCanvas() {
         for (let a = -Math.PI * 0.68; a <= Math.PI * 0.68; a += 0.018) {
           const px = bx + Math.cos(a) * bW,
             py = earthY + Math.sin(a) * bH;
-          a === -Math.PI * 0.68 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+          if (a === -Math.PI * 0.68) {
+            ctx.moveTo(px, py);
+          } else {
+            ctx.lineTo(px, py);
+          }
         }
         ctx.strokeStyle =
           arc === 0
