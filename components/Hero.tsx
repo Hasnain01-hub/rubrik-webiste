@@ -1004,7 +1004,7 @@ export function Hero() {
       id="hero"
       style={{
         minHeight: "100svh",
-        background: "#F2F5FA",
+        background: "rgb(var(--background))",
         position: "relative",
         overflow: "hidden",
         display: "flex",
@@ -1020,7 +1020,7 @@ export function Hero() {
           pointerEvents: "none",
           zIndex: 0,
           backgroundImage:
-            "radial-gradient(circle, rgba(11,18,32,0.052) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(var(--foreground),0.052) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
         }}
       />
@@ -1073,7 +1073,7 @@ export function Hero() {
                   fontWeight: 600,
                   letterSpacing: "0.13em",
                   textTransform: "uppercase",
-                  color: "#0077A8",
+                  color: "var(--accent-cyan)",
                   background: "rgba(0,194,255,0.07)",
                   border: "1px solid rgba(0,194,255,0.16)",
                   borderRadius: 100,
@@ -1100,7 +1100,7 @@ export function Hero() {
                 fontWeight: 800,
                 lineHeight: 1.1,
                 letterSpacing: "-0.028em",
-                color: "#0B1220",
+                color: "rgb(var(--foreground))",
                 margin: 0,
               }}
             >
@@ -1108,7 +1108,7 @@ export function Hero() {
               <span
                 style={{
                   backgroundImage:
-                    "linear-gradient(90deg,#005E88 0%,#00AADD 100%)",
+                    "linear-gradient(90deg,#0096CC 0%,#00C2FF 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
@@ -1123,13 +1123,14 @@ export function Hero() {
                 ...anim(160),
                 fontSize: "1rem",
                 lineHeight: 1.75,
-                color: "rgba(11,18,32,0.52)",
+                color: "rgb(var(--muted-foreground))",
                 margin: 0,
                 maxWidth: "38ch",
               }}
             >
-              Solar storms threaten satellites, power grids, data centers, and
-              cities. We help you monitor, trigger, and underwrite that risk.
+              Space weather events threaten satellites, power grids, data
+              centers, and cities. We help you monitor, trigger, and underwrite
+              that risk.
             </p>
           </div>
 

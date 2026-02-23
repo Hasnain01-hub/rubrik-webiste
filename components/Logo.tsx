@@ -31,12 +31,12 @@ export function Logo({
           width: icon,
           height: icon,
           objectFit: "contain",
-          color: "#172849",
+          filter: "brightness(0) invert(1)",
         }}
       />
 
       {showText && (
-        <span className={`font-bold tracking-wide text-[#182848] ${text}`}>
+        <span className={`font-bold tracking-wide text-[#ffff] ${text}`}>
           RUBRIK
         </span>
       )}

@@ -24,7 +24,7 @@ const explainerItems = [
 
 export function QuickExplainer() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section id="features" className="py-24 bg-white relative overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 grid-pattern opacity-30" />
 
@@ -35,8 +35,9 @@ export function QuickExplainer() {
             <span className="text-gradient">simplified</span>
           </h2>
           <p className="text-lg text-[#0B1220]/60 max-w-2xl mx-auto">
-            Our platform translates complex space environment dynamics into
-            actionable insights for enterprise decision-making.
+            We convert dynamic space weather conditions into quantifiable risk
+            models that power enterprise-grade pricing and underwriting
+            decisions.
           </p>
         </div>
 

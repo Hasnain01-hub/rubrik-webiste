@@ -51,9 +51,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className={`text-sm font-medium transition-colors hover:text-[#00C2FF] ${
-                scrolled ? "text-white/90" : "text-[#182848]"
-              }`}
+              className={`text-sm font-medium transition-colors hover:text-[#00C2FF] text-white/90`}
             >
               {link.label}
             </a>
@@ -82,19 +80,19 @@ export function Header() {
         >
           <div className="w-6 h-5 flex flex-col justify-between">
             <span
-              className={`block h-0.5 w-full transition-all ${
-                scrolled ? "bg-white" : "bg-[#182848]"
-              } ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
+              className={`block h-0.5 w-full transition-all 
+                bg-white
+               ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
             />
             <span
-              className={`block h-0.5 w-full transition-all ${
-                scrolled ? "bg-white" : "bg-[#182848]"
-              } ${mobileMenuOpen ? "opacity-0" : ""}`}
+              className={`block h-0.5 w-full transition-all 
+                bg-white
+               ${mobileMenuOpen ? "opacity-0" : ""}`}
             />
             <span
-              className={`block h-0.5 w-full transition-all ${
-                scrolled ? "bg-white" : "bg-[#182848]"
-              } ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+              className={`block h-0.5 w-full transition-all 
+                bg-white
+               ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
             />
           </div>
         </button>
