@@ -635,12 +635,11 @@ function HeroCanvas() {
       ctx.restore();
     };
 
-    /* ── Asset icon drawers ── */
-    const drawSat = (cx: number, cy: number, s: number, glow: number) => {
+    const drawTelecom = (cx: number, cy: number, s: number, glow: number) => {
       if (glow > 0) {
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, s * 2.2);
-        g.addColorStop(0, `rgba(255,130,40,${glow * 0.22})`);
-        g.addColorStop(1, "rgba(255,100,0,0)");
+        g.addColorStop(0, `rgba(255,80,80,${glow * 0.28})`);
+        g.addColorStop(1, "rgba(255,50,50,0)");
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(cx, cy, s * 2.2, 0, Math.PI * 2);
@@ -648,38 +647,49 @@ function HeroCanvas() {
       }
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(0.42);
-      ctx.fillStyle = "#B8D4EE";
+      // Tower base
+      ctx.strokeStyle = "rgba(180,200,230,0.9)";
+      ctx.lineWidth = 1.2;
       ctx.beginPath();
-      rrect(ctx, -s * 0.3, -s * 0.2, s * 0.6, s * 0.4, s * 0.07);
-      ctx.fill();
-      ctx.fillStyle = "#2E7BB8";
-      ctx.fillRect(-s * 0.88, -s * 0.1, s * 0.5, s * 0.2);
-      ctx.fillRect(s * 0.38, -s * 0.1, s * 0.5, s * 0.2);
-      ctx.strokeStyle = "rgba(90,180,230,0.6)";
-      ctx.lineWidth = 0.7;
-      [1, 2].forEach((j) => {
-        let px = -s * 0.88 + ((s * 0.5) / 3) * j;
+      ctx.moveTo(-s * 0.18, s * 0.4);
+      ctx.lineTo(0, -s * 0.5);
+      ctx.lineTo(s * 0.18, s * 0.4);
+      ctx.stroke();
+      // Cross braces
+      [0.1, 0.28, 0.46].forEach((frac) => {
+        const y = -s * 0.5 + frac * s * 0.9,
+          arm = s * (0.18 - frac * 0.08);
         ctx.beginPath();
-        ctx.moveTo(px, -s * 0.1);
-        ctx.lineTo(px, s * 0.1);
-        ctx.stroke();
-        px = s * 0.38 + ((s * 0.5) / 3) * j;
-        ctx.beginPath();
-        ctx.moveTo(px, -s * 0.1);
-        ctx.lineTo(px, s * 0.1);
+        ctx.moveTo(-arm, y);
+        ctx.lineTo(arm, y);
+        ctx.strokeStyle = "rgba(160,185,215,0.75)";
+        ctx.lineWidth = 0.9;
         ctx.stroke();
       });
-      ctx.strokeStyle = "#A0C8E8";
-      ctx.lineWidth = 0.9;
-      ctx.beginPath();
-      ctx.moveTo(0, -s * 0.2);
-      ctx.lineTo(s * 0.14, -s * 0.48);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(s * 0.14, -s * 0.48, s * 0.055, 0, Math.PI * 2);
-      ctx.fillStyle = "#78B8E8";
-      ctx.fill();
+      // Signal arcs (disrupted / glitchy when glow > 0)
+      for (let i = 1; i <= 3; i++) {
+        const r = s * (0.22 + i * 0.18);
+        const alpha =
+          glow > 0.3
+            ? i % 2 === 0
+              ? 0
+              : 0.55 * (1 - i * 0.18) // broken arcs
+            : 0.5 - i * 0.1;
+        const color =
+          glow > 0.3 ? `rgba(255,90,60,${alpha})` : `rgba(0,210,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(0, -s * 0.5, r, -Math.PI * 0.75, -Math.PI * 0.25);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = glow > 0.3 ? 1.0 : 1.2;
+        ctx.stroke();
+      }
+      // Flicker dot at top during event
+      if (glow > 0.3) {
+        ctx.beginPath();
+        ctx.arc(0, -s * 0.5, s * 0.07, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,80,60,${glow * 0.9})`;
+        ctx.fill();
+      }
       ctx.restore();
     };
 
@@ -819,12 +829,12 @@ function HeroCanvas() {
       const earthR = Math.min(W, H) * 0.175;
       const shieldR = earthR * 1.85;
 
-      const orbit = shieldR * 1.42;
+      const orbit = shieldR * 1.28;
       const assets = [
         {
           angle: -0.62,
           draw: (x: number, y: number, g: number) =>
-            drawSat(x, y, earthR * 0.32, g),
+            drawTelecom(x, y, earthR * 0.32, g),
         },
         {
           angle: -1.9,
@@ -855,9 +865,32 @@ function HeroCanvas() {
           p.spd = Math.max(0.22, p.spd * 0.983);
         }
         const prog = p.life / p.maxLife;
-        const a =
-          (prog < 0.1 ? prog / 0.1 : prog > 0.78 ? (1 - prog) / 0.22 : 1) *
-          0.55;
+        const lifeFade =
+          prog < 0.1 ? prog / 0.1 : prog > 0.78 ? (1 - prog) / 0.22 : 1;
+
+        // Fade out as particle approaches the two targets
+        const telecomX =
+          earthX + Math.cos(-0.62) * (Math.min(W, H) * 0.175 * 1.85 * 1.42);
+        const telecomY =
+          earthY + Math.sin(-0.62) * (Math.min(W, H) * 0.175 * 1.85 * 1.42);
+        const dcX =
+          earthX + Math.cos(0.55) * (Math.min(W, H) * 0.175 * 1.85 * 1.42);
+        const dcY =
+          earthY + Math.sin(0.55) * (Math.min(W, H) * 0.175 * 1.85 * 1.42);
+
+        const distToTelecom = Math.sqrt(
+          (p.x - telecomX) ** 2 + (p.y - telecomY) ** 2,
+        );
+        const distToDC = Math.sqrt((p.x - dcX) ** 2 + (p.y - dcY) ** 2);
+        const nearestTarget = Math.min(distToTelecom, distToDC);
+
+        const fadeRadius = Math.min(W, H) * 0.095;
+        const proximityFade =
+          nearestTarget < fadeRadius
+            ? Math.min(1, nearestTarget / fadeRadius)
+            : 1;
+
+        const a = lifeFade * proximityFade * 0.55;
         const w = Math.max(0, 1 - p.x / (W * 0.5));
         const hue = 200 - w * 172;
         ctx.beginPath();
@@ -1128,9 +1161,8 @@ export function Hero() {
                 maxWidth: "38ch",
               }}
             >
-              Space weather events threaten satellites, power grids, data
-              centers, and cities. We help you monitor, trigger, and underwrite
-              that risk.
+              Space weather events threaten power grids, data centers, and
+              cities. We help you monitor, trigger, and underwrite that risk.
             </p>
           </div>
 
