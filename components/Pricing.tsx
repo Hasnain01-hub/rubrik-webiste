@@ -147,7 +147,7 @@ export function Pricing() {
               }}
             >
               {/* Popular badge */}
-              {plan.accent && (
+              {/* {plan.accent && (
                 <div style={{
                   position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
                   background: "linear-gradient(90deg, #0070A8, #00C2FF)",
@@ -160,7 +160,7 @@ export function Pricing() {
                 }}>
                   Most Popular
                 </div>
-              )}
+              )} */}
 
               {/* Plan header */}
               <div style={{ marginBottom: "1.5rem" }}>
